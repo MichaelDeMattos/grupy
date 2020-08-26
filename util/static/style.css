@@ -1,0 +1,19 @@
+#title {
+	color: white;
+	background-color: black;
+	font-size: 18px;
+	font-family: sans-bold;
+	font-weight:bold;
+}
+
+#button {
+	margin:2px;
+	border-color: black;
+	background:linear-gradient(to bottom, #6495ED 5%, #483D8B 100%);
+}
+
+#toolbar{
+	background-color: #999999;
+	border-color: black;
+	margin:2px;
+}
