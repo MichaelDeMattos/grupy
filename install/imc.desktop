@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=IMC
+Type=Application
+Exec=python3 /usr/local/bin/grupy/compiled/imc.pyc
+Icon=/usr/local/bin/grupy/util/icons/imc.ico
+Name[pt_BR]=IMC
