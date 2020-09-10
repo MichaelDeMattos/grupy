@@ -2,8 +2,37 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkLabel" id="lb_tile_bt_delete_imc_history">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="label" translatable="yes">Excluir</property>
+    <attributes>
+      <attribute name="font-desc" value="Sans Bold 10"/>
+    </attributes>
+  </object>
+  <object class="GtkLabel" id="lb_title_bt_calculate_imc">
+    <property name="name">bt_calculate_imc</property>
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="label" translatable="yes">Calcular IMC</property>
+    <attributes>
+      <attribute name="font-desc" value="Sans Bold 10"/>
+    </attributes>
+  </object>
+  <object class="GtkLabel" id="lb_title_bt_search">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="label" translatable="yes">Buscar</property>
+    <attributes>
+      <attribute name="font-desc" value="Sans Bold 10"/>
+    </attributes>
+  </object>
   <object class="GtkListStore" id="list_imc">
     <columns>
+      <!-- column-name select -->
+      <column type="gboolean"/>
+      <!-- column-name cod_imc -->
+      <column type="gchararray"/>
       <!-- column-name name -->
       <column type="gchararray"/>
       <!-- column-name current_weight -->
@@ -19,8 +48,8 @@
   <object class="GtkWindow" id="calculate_imc">
     <property name="can_focus">False</property>
     <property name="resizable">False</property>
-    <property name="default_width">450</property>
-    <property name="default_height">450</property>
+    <property name="default_width">600</property>
+    <property name="default_height">600</property>
     <signal name="delete-event" handler="on_calculate_imc_delete_event" swapped="no"/>
     <child>
       <placeholder/>
@@ -30,6 +59,7 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
+        <property name="spacing">5</property>
         <child>
           <object class="GtkToolbar" id="main_toolbar">
             <property name="name">toolbar</property>
@@ -40,14 +70,43 @@
               <object class="GtkToolButton" id="bt_calculate_imc">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Calcular IMC</property>
+                <property name="is_important">True</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-zoom-in</property>
+                <property name="label_widget">lb_title_bt_calculate_imc</property>
+                <property name="stock_id">gtk-sort-ascending</property>
                 <signal name="clicked" handler="on_bt_calculate_imc_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="bt_delete_history_imc">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_underline">True</property>
+                <property name="label_widget">lb_tile_bt_delete_imc_history</property>
+                <property name="stock_id">gtk-delete</property>
+                <signal name="clicked" handler="on_bt_delete_history_imc_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
                 <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="bt_search">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_underline">True</property>
+                <property name="label_widget">lb_title_bt_search</property>
+                <property name="stock_id">gtk-find</property>
+                <signal name="clicked" handler="on_bt_search_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
           </object>
@@ -61,7 +120,8 @@
           <object class="GtkGrid" id="grid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="halign">center</property>
+            <property name="halign">start</property>
+            <property name="baseline_row">5</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
@@ -125,10 +185,12 @@
               <object class="GtkEntry" id="entry_current_weight">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="halign">start</property>
                 <property name="margin_left">5</property>
                 <property name="margin_right">5</property>
                 <property name="margin_top">5</property>
                 <property name="margin_bottom">5</property>
+                <property name="width_chars">5</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -139,10 +201,12 @@
               <object class="GtkEntry" id="entry_height">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="halign">start</property>
                 <property name="margin_left">5</property>
                 <property name="margin_right">5</property>
                 <property name="margin_top">5</property>
                 <property name="margin_bottom">5</property>
+                <property name="width_chars">5</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -163,6 +227,7 @@
             <property name="shadow_type">in</property>
             <child>
               <object class="GtkTreeView" id="treeview_imc">
+                <property name="name">treeview</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="model">list_imc</property>
@@ -172,11 +237,38 @@
                 </child>
                 <child>
                   <object class="GtkTreeViewColumn">
+                    <property name="title" translatable="yes">Seleção</property>
+                    <child>
+                      <object class="GtkCellRendererToggle" id="render_select_toggled">
+                        <signal name="toggled" handler="on_render_select_toggled" swapped="no"/>
+                      </object>
+                      <attributes>
+                        <attribute name="active">0</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn">
+                    <property name="title" translatable="yes">#Cód.</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="render_code_imc"/>
+                      <attributes>
+                        <attribute name="text">1</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn">
                     <property name="title" translatable="yes">Nome</property>
                     <child>
-                      <object class="GtkCellRendererText" id="render_name"/>
+                      <object class="GtkCellRendererText" id="render_name">
+                        <property name="editable">True</property>
+                        <signal name="edited" handler="on_render_name_edited" swapped="no"/>
+                      </object>
                       <attributes>
-                        <attribute name="text">0</attribute>
+                        <attribute name="text">2</attribute>
                       </attributes>
                     </child>
                   </object>
@@ -187,7 +279,7 @@
                     <child>
                       <object class="GtkCellRendererText" id="render_current_weight"/>
                       <attributes>
-                        <attribute name="text">1</attribute>
+                        <attribute name="text">3</attribute>
                       </attributes>
                     </child>
                   </object>
@@ -198,7 +290,7 @@
                     <child>
                       <object class="GtkCellRendererText" id="render_heigth"/>
                       <attributes>
-                        <attribute name="text">2</attribute>
+                        <attribute name="text">4</attribute>
                       </attributes>
                     </child>
                   </object>
@@ -209,7 +301,7 @@
                     <child>
                       <object class="GtkCellRendererText" id="render_imc"/>
                       <attributes>
-                        <attribute name="text">3</attribute>
+                        <attribute name="text">5</attribute>
                       </attributes>
                     </child>
                   </object>
@@ -220,7 +312,7 @@
                     <child>
                       <object class="GtkCellRendererText" id="render_imc_result"/>
                       <attributes>
-                        <attribute name="text">4</attribute>
+                        <attribute name="text">6</attribute>
                       </attributes>
                     </child>
                   </object>
@@ -251,6 +343,7 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
+        <property name="spacing">5</property>
         <child>
           <object class="GtkLabel">
             <property name="name">title</property>
@@ -307,18 +400,12 @@
       <object class="GtkBox">
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
+        <property name="spacing">5</property>
         <child internal-child="action_area">
           <object class="GtkButtonBox">
             <property name="can_focus">False</property>
             <property name="homogeneous">True</property>
             <property name="layout_style">end</property>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
