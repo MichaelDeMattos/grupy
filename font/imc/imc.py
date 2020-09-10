@@ -12,7 +12,7 @@ import base64
 import time
 
 gi.require_version('Gtk', '3.0')
-DEBUG = True
+DEBUG = False
 if DEBUG == True:
 	os.system("rm -rf ~/grupy/font/imc/UtilGtk; ln -s ~/grupy/util/compiled/ ~/grupy/font/imc/UtilGtk")
 
