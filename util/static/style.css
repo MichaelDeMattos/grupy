@@ -17,3 +17,13 @@
 	border-color: black;
 	margin:2px;
 }
+
+#bt_calculate_imc{
+	color: black;
+	border-color: black;
+}
+
+#treeview{
+	border-color: #999999;
+	color: black;
+}
